@@ -1,7 +1,7 @@
-#this three line initiate the database
+#this three line initiate the database, just run these in interactive window 
 from BeaconServer.function import *
-db.drop_all()
-db.create_all()
+db.drop_all() #remove all existing data
+db.create_all() # create tables of the database
 
 #data_list store info as a list of dict
 data_list=[{'username':'jack','password':'abc'},]
