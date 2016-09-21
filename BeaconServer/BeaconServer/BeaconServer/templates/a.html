@@ -1,13 +1,14 @@
 ﻿{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
 Beacon Healthcare
 {% endblock %}
 
 {% block body %}
-<form action={{url_for('login')}} method="post">
-    {{wtf.quick_form(form)}}
+<form action={{url_for('api')}} method="post">
+    {{form.hidden_tag()}}
+    {{form.name.label}}{{form.name(size=20)}}
+    <input type="submit" value="Go" />
 </form>
 
 {% endblock %}

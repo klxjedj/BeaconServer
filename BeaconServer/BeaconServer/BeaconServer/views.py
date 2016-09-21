@@ -11,8 +11,7 @@ from BeaconServer.model import Account
 from BeaconServer.form import *
 from flask.ext.bootstrap import Bootstrap
 
-Bootstrap(app)
-
+'''
 @app.route('/')
 def index():
     return redirect(url_for('login'))
@@ -73,7 +72,7 @@ def edit_carerecipient_info():
 
 
 
-
+'''
 
 
 '''
@@ -106,8 +105,10 @@ def about():
         message='Your application description page.'
     )
 '''
-@app.route('/api',methods=['POST'])
+@app.route('/api',methods=['GET','POST'])
 def api():
+    return 'hello world'
+    '''
     user_id=request.form['user_id']
     action=request.form['action']
     k=request.form
@@ -116,4 +117,4 @@ def api():
         return 'Permission Denied'
     else:
         action_map[role][action](k)
-    
+    '''
