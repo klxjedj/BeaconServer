@@ -34,6 +34,9 @@
     </Compile>
     <Compile Include="BeaconServer\function.py" />
     <Compile Include="BeaconServer\model.py" />
+    <Compile Include="BeaconServer\test.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BeaconServer\views.py" />
     <Compile Include="runserver.py" />
     <Compile Include="BeaconServer\__init__.py" />
