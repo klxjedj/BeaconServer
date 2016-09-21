@@ -40,6 +40,17 @@ class CareGiver(db.Model):
     def __repr__(self):
         return showItem(self)
 
+class Doctor(db.Model):
+    __tablename__='Doctor'
+    id=db.Column(db.Integer,db.ForeignKey('Account.id'),primary_key=True)
+    account=db.relationship('Account')
+    
+    name=db.Column(db.String)
+    clinic=db.Column(db.String)
+    contact=db.Column(db.String)
+    def __repr__(self):
+        return showItem(self)
+
 class CareRecipient(db.Model):
     __tablename__='CareRecipient'
     id=db.Column(db.Integer,db.ForeignKey('Account.id'),primary_key=True)
@@ -52,7 +63,8 @@ class CareRecipient(db.Model):
     mobile_contact=db.Column(db.String)
     
     contact_person_id=db.Column(db.Integer,db.ForeignKey('FamilyMember.id'))
-    contact_person=db.relationship('FamilyMember')
+    
+    contact_person=db.relationship('FamilyMember',foreign_keys=[contact_person_id])
     
     doctor_id=db.Column(db.Integer,db.ForeignKey('Doctor.id'))
     doctor=db.relationship('Doctor')
@@ -68,20 +80,10 @@ class FamilyMember(db.Model):
     
     relationship=db.Column(db.String)
     carerecipient_id=db.Column(db.Integer,db.ForeignKey('CareRecipient.id'))
-    carerecipient=db.relationship('CareRecipient',backref='family_member')
+    carerecipient=db.relationship('CareRecipient',backref='family_member',foreign_keys=[carerecipient_id])
     def __repr__(self):
         return showItem(self)
     
-class Doctor(db.Model):
-    __tablename__='Doctor'
-    id=db.Column(db.Integer,db.ForeignKey('Account.id'),primary_key=True)
-    account=db.relationship('Account')
-    
-    name=db.Column(db.String)
-    clinic=db.Column(db.String)
-    contact=db.Column(db.String)
-    def __repr__(self):
-        return showItem(self)
 
 class Administrator(db.Model):
     __tablename__='Administrator'

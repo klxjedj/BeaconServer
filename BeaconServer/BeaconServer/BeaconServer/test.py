@@ -7,4 +7,4 @@ db.create_all() # create tables of the database
 data_list=[{'username':'jack','password':'abc'},]
 
 #call the createXXX function to create data,take dict in data_list as parameter
-createCaregiver(data_list[0])
+createCareGiver(data_list[0])

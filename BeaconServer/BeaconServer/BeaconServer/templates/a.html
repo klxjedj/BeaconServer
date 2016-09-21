@@ -1,15 +1,13 @@
 ﻿{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
 Beacon Healthcare
 {% endblock %}
 
 {% block body %}
-{% for item in form -%}
-    {% if item=="csrf_token" %}
-    {% else %}
-        <p>{{item.label}}{{item}}</p>
-    {% endif %}
-{%endfor%}
+<form action={{url_for('login')}} method="post">
+    {{wtf.quick_form(form)}}
+</form>
 
 {% endblock %}

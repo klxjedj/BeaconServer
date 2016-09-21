@@ -22,13 +22,39 @@ def login():
     d={'logged':False}
     form=loginForm()
     if request.method=='POST':
-        d['logged']=True
+        app.logger.debug('kdajodijadlfja')
         return render_template('admin.html')
     return render_template('a.html',form=form)
+
 
 @app.route('/add_caregiver')
 def add_caregiver():
     return 'add caregiver'
+
+@app.route('/create_carerecipient')
+def create_carerecipient():
+    return 'create_carerecipient'
+
+@app.route('/create_family_member')
+def create_family_member():
+    return 'create_family_member'
+
+@app.route('/create_doctor')
+def create_doctor():
+    return 'create_doctor'
+
+@app.route('/create_admin')
+def create_admin():
+    return 'create_admin'
+
+@app.route('/block_bad_giver')
+def block_bad_giver():
+    return 'block_bad_giver'
+
+@app.route('/edit_carerecipient_info')
+def edit_carerecipient_info():
+    return 'edit_carerecipient_info'
+
 
 
 
