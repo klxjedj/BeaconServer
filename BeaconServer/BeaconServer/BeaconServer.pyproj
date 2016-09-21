@@ -29,6 +29,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BeaconServer\config.py" />
+    <Compile Include="BeaconServer\form.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BeaconServer\function.py" />
     <Compile Include="BeaconServer\model.py" />
     <Compile Include="BeaconServer\views.py" />
@@ -44,6 +47,9 @@
     <Folder Include="BeaconServer\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BeaconServer\templates\a.html" />
+    <Content Include="BeaconServer\templates\admin.html" />
+    <Content Include="BeaconServer\templates\doctor.html" />
     <Content Include="requirements.txt" />
     <Content Include="BeaconServer\static\content\bootstrap.css" />
     <Content Include="BeaconServer\static\content\bootstrap.min.css" />

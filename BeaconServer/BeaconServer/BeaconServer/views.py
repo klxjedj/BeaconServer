@@ -3,14 +3,54 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template,request
+from flask import render_template,request,redirect,url_for,flash,session
 from BeaconServer import app
 from BeaconServer.config import *
+from BeaconServer.function import *
 from BeaconServer.model import Account
-@app.route('/')
-def helloworld():
-    return 'hello world'
+from BeaconServer.form import *
+from flask.ext.bootstrap import Bootstrap
 
+Bootstrap(app)
+
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    d={'logged':False}
+    form=loginForm()
+    if request.method=='POST':
+        d['logged']=True
+        return render_template('admin.html')
+    return render_template('a.html',form=form)
+
+@app.route('/add_caregiver')
+def add_caregiver():
+    return 'add caregiver'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 @app.route('/home')
 def home():
     """Renders the home page."""
@@ -39,7 +79,7 @@ def about():
         year=datetime.now().year,
         message='Your application description page.'
     )
-
+'''
 @app.route('/api',methods=['POST'])
 def api():
     user_id=request.form['user_id']

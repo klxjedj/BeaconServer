@@ -1,0 +1,15 @@
+﻿{% extends "bootstrap/base.html" %}
+
+{% block head %}
+Beacon Healthcare
+{% endblock %}
+
+{% block body %}
+{% for item in form -%}
+    {% if item=="csrf_token" %}
+    {% else %}
+        <p>{{item.label}}{{item}}</p>
+    {% endif %}
+{%endfor%}
+
+{% endblock %}
