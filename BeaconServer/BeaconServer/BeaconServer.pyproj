@@ -50,8 +50,9 @@
     <Folder Include="BeaconServer\templates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BeaconServer\templates\a.html" />
+    <Content Include="BeaconServer\templates\login.html" />
     <Content Include="BeaconServer\templates\admin.html" />
+    <Content Include="BeaconServer\templates\webapi.html" />
     <Content Include="BeaconServer\templates\doctor.html" />
     <Content Include="requirements.txt" />
     <Content Include="BeaconServer\static\content\bootstrap.css" />

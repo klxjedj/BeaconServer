@@ -10,7 +10,7 @@
 {% endwith %}
 
 
-<p>hi,what do you want to do?</p>
+<p>hi,{{session['username']}}what do you want to do?</p>
 <p>
     <a href={{url_for('add_caregiver')}}>
         add caregiver

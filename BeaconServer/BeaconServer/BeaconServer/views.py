@@ -1,7 +1,7 @@
 """
 Routes and views for the flask application.
 """
-
+import json
 from datetime import datetime
 from flask import render_template,request,redirect,url_for,flash,session
 from BeaconServer import app
@@ -10,111 +10,77 @@ from BeaconServer.function import *
 from BeaconServer.model import Account
 from BeaconServer.form import *
 from flask.ext.bootstrap import Bootstrap
+from flask_wtf import Form
 
-'''
+
 @app.route('/')
 def index():
     return redirect(url_for('login'))
 
 @app.route('/login',methods=['GET','POST'])
 def login():
-    d={'logged':False}
-    form=loginForm()
-    if request.method=='POST':
-        app.logger.debug('kdajodijadlfja')
+    form=loginForm(username='klxjedj')
+    if form.validate_on_submit():
+        session['username']=form.username.data
         return render_template('admin.html')
-    return render_template('a.html',form=form)
+    return render_template('login.html',form=form,url='login')
 
 
-@app.route('/add_caregiver')
+@app.route('/add_caregiver',methods=['GET','POST'])
 def add_caregiver():
-    return 'add caregiver'
+    form=addCaregiverForm()
+    if form.validate_on_submit():
+        return createCareGiver(form.data)
+        
+    return render_template('webapi.html',form=form,url='add_caregiver')
 
-@app.route('/create_carerecipient')
+@app.route('/create_carerecipient',methods=['GET','POST'])
 def create_carerecipient():
-    return 'create_carerecipient'
+    form=addCarerecipientForm()
+    if form.validate_on_submit():
+        return createCareRecipient(form.data)
 
-@app.route('/create_family_member')
+    return render_template('webapi.html',form=form,url='create_carerecipient')
+
+@app.route('/create_family_member',methods=['GET','POST'])
 def create_family_member():
-    return 'create_family_member'
+    form=addFamilyMemberForm()
+    if form.validate_on_submit():
+        return createFamilyMember(form.data)
+    return render_template('a.html',form=form,url='create_family_member')
 
-@app.route('/create_doctor')
+@app.route('/create_doctor',methods=['GET','POST'])
 def create_doctor():
-    return 'create_doctor'
+    form=addDoctorForm()
+    if form.validate_on_submit():
+        return createDoctor(form.data)
+    return render_template('webapi.html',form=form,url='create_doctor')
 
-@app.route('/create_admin')
+@app.route('/create_admin',methods=['GET','POST'])
 def create_admin():
-    return 'create_admin'
+    form=addAdministratorForm()
+    if form.validate_on_submit():
+        return createAdministrator(form.data)
+    return render_template('webapi.html',form=form,url='create_admin')
 
-@app.route('/block_bad_giver')
+@app.route('/block_bad_giver',methods=['GET','POST'])
 def block_bad_giver():
-    return 'block_bad_giver'
+    form=blockBadGiverForm()
+    if form.validate_on_submit():
+        return 'ok'
+    return render_template('webapi.html',form=form,url='block_bad_giver')
 
-@app.route('/edit_carerecipient_info')
+@app.route('/edit_carerecipient_info',methods=['GET','POST'])
 def edit_carerecipient_info():
-    return 'edit_carerecipient_info'
+    form=editCarerecipientInfoForm()
+    if form.validate_on_submit():
+        return 'ok'
+    return render_template('webapi.html',form=form,url='edit_carerecipient_info')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-
-
-'''
-@app.route('/home')
-def home():
-    """Renders the home page."""
-    return render_template(
-        'index.html',
-        title='Home Page',
-        year=datetime.now().year,
-    )
-
-@app.route('/contact')
-def contact():
-    """Renders the contact page."""
-    return render_template(
-        'contact.html',
-        title='Contact',
-        year=datetime.now().year,
-        message='Your contact page.'
-    )
-
-@app.route('/about')
-def about():
-    """Renders the about page."""
-    return render_template(
-        'about.html',
-        title='About',
-        year=datetime.now().year,
-        message='Your application description page.'
-    )
-'''
 @app.route('/api',methods=['GET','POST'])
 def api():
-    return 'hello world'
-    '''
-    user_id=request.form['user_id']
-    action=request.form['action']
     k=request.form
-    role=Account.query.filter(id=user_id).one().role
-    if action not in action_map[role]:
-        return 'Permission Denied'
-    else:
-        action_map[role][action](k)
-    '''
+    return json.dumps(k)
+    
+
+    

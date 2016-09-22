@@ -1,0 +1,14 @@
+﻿{% extends 'bootstrap/base.html' %}
+
+{% block content %}
+<form action={{url_for(url)}} method="post">
+    <table>
+        {% for item in form if item.id!='csrf_token' %}
+        <tr>
+            <td>{{item.label}}</td>       
+            <td>{{item}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+{%endblock%}

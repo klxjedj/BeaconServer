@@ -1,6 +1,7 @@
 from BeaconServer.model import *
 from BeaconServer import *
 import json
+from datetime import datetime
 
 type_map={'a':Administrator,
           'g':CareGiver,
@@ -18,8 +19,8 @@ def createUser(type,k):
             setattr(new_user,i,k[i])
     db.session.add_all([new_user,new_acct])
     db.session.commit()
-    print(ACCOUNT_ID)
     ACCOUNT_ID+=1
+    
 
 def list2json(l):
     lr=[]
@@ -35,18 +36,23 @@ def list2json(l):
 
 def createCareGiver(k):
     createUser('g',k)
+    return viewCareGiver()
 
 def createCareRecipient(k):
     createUser('r',k)
+    return list2json(db.session.query(CareRecipient).all())
 
 def createFamilyMember(k):
     createUser('m',k)
+    return list2json(db.session.query(FamilyMember).all())
 
 def createDoctor(k):
     createUser('d',k)
+    return list2json(db.session.query(Doctor).all())
 
 def createAdministrator(k):
     createUser('a',k)
+    return list2json(db.session.query(Administrator).all())
 
 def changePassword(k):
     account=Account.query.filter(Account.id==k['user_id']).one()
@@ -118,7 +124,7 @@ def viewServiceToPerform(k):
     rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='confirmed').all()
     return list2json(rl)
 #define
-def viewCareGiver(k):
+def viewCareGiver():
     gl=CareGiver.query.all()
     return list2json(gl)
 
