@@ -1,49 +1,12 @@
-﻿{% extends "bootstrap/base.html" %}
-{% block body %}
+﻿{% extends "head.html" %}
 
-{% with messages=get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            {{message}}
+{% block content %}
+{{super()}} 
+   <div class="container-fluid col-md-2 col-md-offset-5" align="center">
+        {% for func in admin_list %}
+       <div href="{{url_for('login')}}">
+           <h1 align="left"><a href="{{url_for(func)}}">{{func}}</a></h1>
+       </div>
         {% endfor %}
-    {% endif %}
-{% endwith %}
-
-
-<p>hi,{{session['username']}}what do you want to do?</p>
-<p>
-    <a href={{url_for('add_caregiver')}}>
-        add caregiver
-    </a>
-</p>
-<p>
-    <a href={{url_for('create_carerecipient')}}>
-        create_carerecipient
-    </a>
-</p>
-<p>
-    <a href={{url_for('create_family_member')}}>
-        create_family_member
-        </a>
-</p>
-<p>
-    <a href={{url_for('create_doctor')}}>
-        create_doctor
-    </a>
-</p>
-<p>
-    <a href={{url_for('create_admin')}}>
-        create_admin
-    </a>
-</p>
-<p>
-    <a href={{url_for('block_bad_giver')}}>
-        block_bad_giver
-    </a>
-</p>
-<p>
-    <a href={{url_for('edit_carerecipient_info')}}>
-        edit_carerecipient_info
-    </a>
-</p>
+    </div>
 {% endblock %}

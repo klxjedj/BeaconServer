@@ -1,0 +1,5 @@
+﻿{% extends "head.html" %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+{% block body %}
+{{render_pagination(query_results)}}
+{% endblock %}

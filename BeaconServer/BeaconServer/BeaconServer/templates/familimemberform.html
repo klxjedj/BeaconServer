@@ -1,0 +1,20 @@
+{% extends "form.html" %}
+{% block form %}
+<div class="form-group">
+    {{form.username.label}}{{form.username(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.password.label}}{{form.password(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.password_confirm.label}}{{form.password_confirm(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.name.label}}{{form.name(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.carerecipienet_id.label}}{{form.carerecipienet_id(class="form-control")}}
+</div>
+{{form.submit}}
+
+{% endblock %}

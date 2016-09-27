@@ -14,15 +14,12 @@ from flask_wtf import Form
 
 
 @app.route('/')
-def index():
-    return redirect(url_for('login'))
-
 @app.route('/login',methods=['GET','POST'])
 def login():
     form=loginForm(username='klxjedj')
     if form.validate_on_submit():
         session['username']=form.username.data
-        return render_template('admin.html')
+        return render_template('admin.html',admin_list=admin_list)
     return render_template('login.html',form=form,url='login')
 
 
@@ -30,38 +27,37 @@ def login():
 def add_caregiver():
     form=addCaregiverForm()
     if form.validate_on_submit():
-        return createCareGiver(form.data)
-        
-    return render_template('webapi.html',form=form,url='add_caregiver')
+        result=createCareGiver(form.data)
+        return render_template('result.html',query_results=result)
+    return render_template('caregiverform.html',form=form,url='add_caregiver')
 
 @app.route('/create_carerecipient',methods=['GET','POST'])
 def create_carerecipient():
     form=addCarerecipientForm()
     if form.validate_on_submit():
         return createCareRecipient(form.data)
-
-    return render_template('webapi.html',form=form,url='create_carerecipient')
+    return render_template('carerecipientform.html',form=form,url='create_carerecipient')
 
 @app.route('/create_family_member',methods=['GET','POST'])
 def create_family_member():
     form=addFamilyMemberForm()
     if form.validate_on_submit():
         return createFamilyMember(form.data)
-    return render_template('a.html',form=form,url='create_family_member')
+    return render_template('familymemberform.html',form=form,url='create_family_member')
 
 @app.route('/create_doctor',methods=['GET','POST'])
 def create_doctor():
     form=addDoctorForm()
     if form.validate_on_submit():
         return createDoctor(form.data)
-    return render_template('webapi.html',form=form,url='create_doctor')
+    return render_template('doctorform.html',form=form,url='create_doctor')
 
 @app.route('/create_admin',methods=['GET','POST'])
 def create_admin():
     form=addAdministratorForm()
     if form.validate_on_submit():
         return createAdministrator(form.data)
-    return render_template('webapi.html',form=form,url='create_admin')
+    return render_template('adminform.html',form=form,url='create_admin')
 
 @app.route('/block_bad_giver',methods=['GET','POST'])
 def block_bad_giver():
@@ -80,7 +76,8 @@ def edit_carerecipient_info():
 @app.route('/api',methods=['GET','POST'])
 def api():
     k=request.form
-    return json.dumps(k)
-    
-
+    user_id=k['user_id']
+    role=Account.query.filter_by(id=user_id).one().role
+    action=k['action']
+    return action_map[role][action](k)
     

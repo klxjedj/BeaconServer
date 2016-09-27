@@ -5,14 +5,14 @@ from wtforms.validators import DataRequired
 class loginForm(Form):
     username=StringField('username',[DataRequired()])
     password=PasswordField('password',[DataRequired()])
-    submit=SubmitField('submit')
+    submit=SubmitField('Login')
 
 
 class addCaregiverForm(Form):
     username=StringField('username',[DataRequired()])
     password=PasswordField('password',[DataRequired()])
     name=StringField('name')
-    confirm_password=PasswordField('confirm password',[DataRequired()])
+    password_confirm=PasswordField('password confirm',[DataRequired()])
     demo_info=TextAreaField('demo_inof')
     expertise=StringField('expertise')
     contact=StringField('contact')
@@ -22,7 +22,7 @@ class addCarerecipientForm(Form):
     username=StringField('username',[DataRequired()])
     password=PasswordField('password',[DataRequired()])
 
-    confirm_password=PasswordField('confirm password',[DataRequired()])
+    password_confirm=PasswordField('password confirm',[DataRequired()])
     name=StringField('name')
 
     address=StringField('address')
@@ -37,6 +37,8 @@ class addCarerecipientForm(Form):
 class addFamilyMemberForm(Form):
     username=StringField('username',[DataRequired()])
     password=PasswordField('password',[DataRequired()])
+    password_confirm=PasswordField('password confirm',[DataRequired()])
+
     name=StringField('name')
 
     carerecipienet_id=IntegerField('carerecipient_id')
@@ -46,12 +48,16 @@ class addFamilyMemberForm(Form):
 class addAdministratorForm(Form):
     username=StringField('username',[DataRequired()])
     password=PasswordField('password',[DataRequired()])
+    password_confirm=PasswordField('password confirm',[DataRequired()])
+
     name=StringField('name')
     submit=SubmitField('submit')
 
 class addDoctorForm(Form):
     username=StringField('username',[DataRequired()])
     password=PasswordField('password',[DataRequired()])
+    password_confirm=PasswordField('password confirm',[DataRequired()])
+
     name=StringField('name')
     clinic=StringField('clinic')
     contact=StringField('contact')

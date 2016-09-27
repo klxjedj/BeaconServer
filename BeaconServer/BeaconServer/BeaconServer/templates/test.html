@@ -1,0 +1,8 @@
+﻿{% extends 'bootstrap/base.html' %}
+
+{% block content %}
+<form action="{{url_for('api')}}" method=post>
+    <label>user_id</label>
+    <input type="number" name="user_id"/>
+</form>
+{% endblock %}

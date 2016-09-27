@@ -1,0 +1,35 @@
+{% extends "form.html" %}
+{% block form %}
+<div class="form-group">
+    {{form.username.label}}{{form.username(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.password.label}}{{form.password(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.password_confirm.label}}{{form.password_confirm(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.name.label}}{{form.name(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.resident_contact.label}}{{form.resident_contact(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.mobile_contact.label}}{{form.mobile_contact(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.contact_person_id.label}}{{form.contact_person_id(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.doctor_id.label}}{{form.doctor_id(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.family_history.label}}{{form.family_history(class="form-control")}}
+</div>
+<div class="form-group">
+    {{form.beacon_id.label}}{{form.beacon_id(class="form-control")}}
+</div>
+{{form.submit}}
+
+{% endblock %}

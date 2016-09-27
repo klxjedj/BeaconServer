@@ -34,6 +34,9 @@
     </Compile>
     <Compile Include="BeaconServer\function.py" />
     <Compile Include="BeaconServer\model.py" />
+    <Compile Include="BeaconServer\templates\caregiverform.html">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BeaconServer\test.py">
       <SubType>Code</SubType>
     </Compile>
@@ -50,10 +53,16 @@
     <Folder Include="BeaconServer\templates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BeaconServer\templates\login.html" />
+    <Content Include="BeaconServer\templates\carerecipientform.html" />
+    <Content Include="BeaconServer\templates\adminform.html" />
+    <Content Include="BeaconServer\templates\familimemberform.html" />
+    <Content Include="BeaconServer\templates\doctorform.html" />
+    <Content Include="BeaconServer\templates\form.html" />
     <Content Include="BeaconServer\templates\admin.html" />
-    <Content Include="BeaconServer\templates\webapi.html" />
-    <Content Include="BeaconServer\templates\doctor.html" />
+    <Content Include="BeaconServer\templates\head.html" />
+    <Content Include="BeaconServer\templates\login.html" />
+    <Content Include="BeaconServer\templates\test.html" />
+    <Content Include="BeaconServer\templates\result.html" />
     <Content Include="requirements.txt" />
     <Content Include="BeaconServer\static\content\bootstrap.css" />
     <Content Include="BeaconServer\static\content\bootstrap.min.css" />
@@ -77,10 +86,6 @@
     <Content Include="BeaconServer\static\scripts\respond.js" />
     <Content Include="BeaconServer\static\scripts\respond.min.js" />
     <Content Include="BeaconServer\static\scripts\_references.js" />
-    <Content Include="BeaconServer\templates\about.html" />
-    <Content Include="BeaconServer\templates\contact.html" />
-    <Content Include="BeaconServer\templates\index.html" />
-    <Content Include="BeaconServer\templates\layout.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

@@ -124,7 +124,7 @@ def viewServiceToPerform(k):
     rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='confirmed').all()
     return list2json(rl)
 #define
-def viewCareGiver():
+def viewCareGiver(k):
     gl=CareGiver.query.all()
     return list2json(gl)
 
