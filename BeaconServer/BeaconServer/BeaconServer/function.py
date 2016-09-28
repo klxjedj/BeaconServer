@@ -36,7 +36,7 @@ def list2json(l):
 
 def createCareGiver(k):
     createUser('g',k)
-    return viewCareGiver()
+    return viewCareGiver(k)
 
 def createCareRecipient(k):
     createUser('r',k)

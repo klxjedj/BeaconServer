@@ -10,5 +10,6 @@ app.config['WTF_CSRF_ENABLED']=False
 app.config['SECRET_KEY']='klxjedj'
 ACCOUNT_ID=5
 from BeaconServer.model import db
-
+db.drop_all()
+db.create_all()
 import BeaconServer.views
