@@ -9,6 +9,7 @@ from BeaconServer.config import *
 from BeaconServer.function import *
 from BeaconServer.model import Account
 from BeaconServer.form import *
+from flask.ext.bootstrap import Bootstrap
 from flask_wtf import Form
 
 
