@@ -30,12 +30,16 @@ class CareGiver(db.Model):
     account=db.relationship('Account')
     
     name=db.Column(db.String)
-    demo_info=db.Column(db.String)
-    expertise=db.Column(db.String)
+    email=db.Column(db.String)
     contact=db.Column(db.String)
-    block_status=db.Column(db.Integer)
+    date_of_birth=db.Column(db.Date)
+    highest_education_level=db.Column(db.String)
+   
+    expertise=db.Column(db.String)
 
+    block_status=db.Column(db.Integer)
     service_frequency=db.Column(db.Integer)
+
     current_service=db.Column(db.Integer,db.ForeignKey('CareRecord.record_id'))
     def __repr__(self):
         return showItem(self)
@@ -100,7 +104,11 @@ class CareRecord(db.Model):
     caregiver=db.relationship('CareGiver',backref='records',foreign_keys=[caregiver_id])
     carerecipient_id=db.Column(db.Integer,db.ForeignKey('CareRecipient.id'))
     carerecipient=db.relationship('CareRecipient',backref='records',foreign_keys=[carerecipient_id])
-    appointment_time=db.Column(db.DATETIME) 
+
+    appointment_time=db.Column(db.DATETIME)
+    end_datetime=db.Column(db.DATETIME)
+    duration=db.Column(db.Integer)
+
     location=db.Column(db.String)
     special_need=db.Column(db.String)
     record_status=db.Column(db.String)

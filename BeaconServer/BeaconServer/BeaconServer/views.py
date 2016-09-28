@@ -80,4 +80,9 @@ def api():
     role=Account.query.filter_by(id=user_id).one().role
     action=k['action']
     return action_map[role][action](k)
-    
+
+@app.route('/api_login',methods=['POST'])
+def api_login():
+    k=request.form
+    return apiLogin(k)
+        
