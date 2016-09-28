@@ -123,8 +123,21 @@ def showDoctorContact(k):
 def viewServiceToPerform(k):
     rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='confirmed').all()
     return list2json(rl)
+
+def apiLogin(k):
+    rl=Account.query.filter_by(username=k['username'], password=k['password']).all()
+    return list2json(rl)
+
+def viewRestrictedCareRecipientInfo(k):
+    return 
+
+def viewTrackingInfo(k):
+    return
+
+def saveServiceSummary(k):
+    return
+
 #define
 def viewCareGiver(k):
     gl=CareGiver.query.all()
     return list2json(gl)
-

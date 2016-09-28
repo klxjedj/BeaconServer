@@ -27,13 +27,17 @@ action_map={
          'view_request':viewRequest,
          'show_doctor_contact':showDoctorContact,
          'view_service_to_performe':viewServiceToPerform,
-         'view_care_giver':viewCareGiver
+         'view_care_giver':viewCareGiver,
+         'save_service_summary':saveServiceSummary,
+         'view_restricted_carerecipient_info':viewRestrictedCareRecipientInfo,
+         'view_tracking_info':viewTrackingInfo,
+         'api_login':apiLogin
         },
     'r':{'change_password':changePassword,
-         'view_care_giver':viewCareGiver
+         'view_care_giver':viewCareGiver,
+         'create_care_request':createCareRequest,
+         'api_login':apiLogin
          },
-    'm':{'change_password':changePassword,
-        },
-    'd':{'change_password':changePassword
-        }
+    'm':{'change_password':changePassword},
+    'd':{'change_password':changePassword}
     }

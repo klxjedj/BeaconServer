@@ -9,7 +9,6 @@ from BeaconServer.config import *
 from BeaconServer.function import *
 from BeaconServer.model import Account
 from BeaconServer.form import *
-from flask.ext.bootstrap import Bootstrap
 from flask_wtf import Form
 
 
@@ -80,4 +79,9 @@ def api():
     role=Account.query.filter_by(id=user_id).one().role
     action=k['action']
     return action_map[role][action](k)
-    
+
+@app.route('/api_login',methods=['POST'])
+def api_login():
+    k=request.form
+    return apiLogin(k)
+        
