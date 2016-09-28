@@ -36,7 +36,7 @@ def list2json(l):
 
 def createCareGiver(k):
     createUser('g',k)
-    return viewCareGiver()
+    return viewCareGiver(k)
 
 def createCareRecipient(k):
     createUser('r',k)
@@ -120,6 +120,7 @@ def showDoctorContact(k):
     cr=CareRecipient.query.filter_by(id=recipient_id).one()
     return cr.doctor.contact
 
+# TODO add sorting functionality to method to enabe filtering by day, week and month
 def viewServiceToPerform(k):
     rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='confirmed').all()
     return list2json(rl)
@@ -137,7 +138,6 @@ def viewTrackingInfo(k):
 def saveServiceSummary(k):
     return
 
-#define
 def viewCareGiver(k):
     gl=CareGiver.query.all()
     return list2json(gl)

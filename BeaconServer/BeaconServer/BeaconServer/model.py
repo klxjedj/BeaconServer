@@ -30,9 +30,10 @@ class CareGiver(db.Model):
     account=db.relationship('Account')
     
     name=db.Column(db.String)
+    gender=db.Column(db.String)
     email=db.Column(db.String)
     contact=db.Column(db.String)
-    date_of_birth=db.Column(db.Date)
+    date_of_birth=db.Column(db.DATETIME)
     highest_education_level=db.Column(db.String)
    
     expertise=db.Column(db.String)
@@ -61,6 +62,7 @@ class CareRecipient(db.Model):
     account=db.relationship('Account')
     
     name=db.Column(db.String)
+    gender=db.Column(db.String)
     address=db.Column(db.String)
     
     resident_contact=db.Column(db.String)
