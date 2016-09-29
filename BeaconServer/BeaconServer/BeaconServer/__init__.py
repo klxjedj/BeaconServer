@@ -12,5 +12,6 @@ ACCOUNT_ID=5
 RECORD_ID=1
 
 from BeaconServer.model import db
-
+db.drop_all()
+db.create_all()
 import BeaconServer.views
