@@ -82,8 +82,8 @@ def createCareRequest(k):
     global RECORD_ID
     cr=CareRecord(record_id=RECORD_ID)
     cr.appointment_time=k['appointment_time']
-    cr.caregiverid=k['caregiver_id']
-    cr.carerecipientid=k['user_id']
+    cr.caregiver_id=k['caregiver_id']
+    cr.carerecipient_id=k['user_id']
     cr.record_status='on_request'
     cr.location=k['location']
     db.session.add(cr)
@@ -92,7 +92,7 @@ def createCareRequest(k):
 
 def acceptRequest(k):
     rc=CareRecord.query.filter_by(record_id=k['record_id']).one()
-    if rc.caregiverid==k['user_id']:
+    if rc.caregiver_id==k['user_id']:
         rc.record_status='confirmed'
         db.session.commit()
         return 'Request Accepted'
@@ -112,7 +112,7 @@ def viewFullInfo(k):
     return json.dumps(data)
   
 def viewRequest(k):
-    rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='on_request').all()
+    rl=CareRecord.query.filter_by(caregiver_id=k['user_id']).filter_by(record_status='on_request').all()
     return list2json(rl)
 
 def showDoctorContact(k):
@@ -122,7 +122,7 @@ def showDoctorContact(k):
 
 # TODO add sorting functionality to method to enabe filtering by day, week and month
 def viewServiceToPerform(k):
-    rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='confirmed').all()
+    rl=CareRecord.query.filter_by(caregiver_id=k['user_id']).filter_by(record_status='confirmed').all()
     return list2json(rl)
 
 def apiLogin(k):
