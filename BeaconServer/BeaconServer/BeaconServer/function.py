@@ -34,6 +34,13 @@ def list2json(l):
         lr.append(data)
     return json.dumps(lr) 
 
+def object2json(object):
+    data={}
+    for i in object.__dict__:
+        if not i.startswith('_'):
+            data[i]=object.__dict__[i]
+    return json.dumps(data)
+
 def createCareGiver(k):
     createUser('g',k)
     return viewCareGiver(k)
@@ -78,6 +85,15 @@ def editCareRecipientInfo(k):
     db.session.commit()
     return 'Info Changed'
 
+def editCareGiverInfo(k):
+    caregiver_id=k['caregiver_id']
+    target=CareGiver.query.filter_by(id=caregiver_id).one()
+    for i in target.__dict__:
+        if i in k:
+            target.__setattr__(i,k[i])
+    db.session.commit()
+    return 'Info Changed'
+
 def createCareRequest(k):
     global RECORD_ID
     cr=CareRecord(record_id=RECORD_ID)
@@ -105,11 +121,7 @@ def cancelRequest(k):
 
 def viewFullInfo(k):
     cr=CareRecipient.query.filter_by(beacon_id=k['beacon_id']).one()
-    data={}
-    for i in cr.__dict__:
-        if not i.startswith('_'):
-            data[i]=cr.__dict__[i]
-    return json.dumps(data)
+    return object2json(cr)
   
 def viewRequest(k):
     rl=CareRecord.query.filter_by(caregiver_id=k['user_id']).filter_by(record_status='on_request').all()
@@ -126,14 +138,12 @@ def viewServiceToPerform(k):
     return list2json(rl)
 
 def apiLogin(k):
-    rl=Account.query.filter_by(username=k['username'], password=k['password']).all()
-    return list2json(rl)
+    acc=Account.query.filter_by(username=k['username'], password=k['password']).one()
+    return object2json(acc)
 
 def viewRestrictedCareRecipientInfo(k):
-    return 
-
-def viewTrackingInfo(k):
-    return
+    cr=CareRecipient.query.filter_by(id=k['recipient_id']).one()
+    return object2json(cr)
 
 def saveServiceSummary(k):
     return
