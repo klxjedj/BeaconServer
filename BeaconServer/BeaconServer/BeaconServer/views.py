@@ -75,7 +75,7 @@ def edit_carerecipient_info():
 
 @app.route('/api',methods=['GET','POST'])
 def api():
-    k=request.form
+    k=request.get_json()
     user_id=k['user_id']
     role=Account.query.filter_by(id=user_id).one().role
     action=k['action']

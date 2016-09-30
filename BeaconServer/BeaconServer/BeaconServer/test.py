@@ -146,3 +146,4 @@ viewRestrictedCareRecipientInfo({
 viewFullInfo({
    'beacon_id': 1
 })
+
