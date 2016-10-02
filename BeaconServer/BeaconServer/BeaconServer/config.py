@@ -33,8 +33,10 @@ action_map = {
          'api_login':apiLogin
         },
     'r':{'change_password':changePassword,
-         'view_care_giver':viewCareGiver,
          'create_care_request':createCareRequest,
+         'rate_review_care_service':rateReviewCareService,
+          'view_available_care_givers':viewAvailableCareGivers,
+          'view_care_giver_by_id':viewCareGiverById,
          'edit_care_recipient_info':editCareRecipientInfo,
          'api_login':apiLogin
          },

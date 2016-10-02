@@ -83,6 +83,6 @@ def api():
 
 @app.route('/api_login',methods=['POST'])
 def api_login():
-    k=request.form
+    k=request.get_json()
     return apiLogin(k)
         

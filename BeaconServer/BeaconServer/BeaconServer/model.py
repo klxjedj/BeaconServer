@@ -38,8 +38,10 @@ class CareGiver(db.Model):
    
     expertise=db.Column(db.String)
 
+    average_rating=db.Column(db.Float(precision=2),default=0)
     block_status=db.Column(db.Integer)
     service_frequency=db.Column(db.Integer)
+    no_of_service_given=db.Column(db.Integer,default=0)
 
     current_service=db.Column(db.Integer,db.ForeignKey('CareRecord.record_id'))
     def __repr__(self):
@@ -114,8 +116,9 @@ class CareRecord(db.Model):
     location=db.Column(db.String)
     special_need=db.Column(db.String)
     record_status=db.Column(db.String)
+
     review=db.Column(db.String)
-    rate=db.Column(db.String)
+    rating=db.Column(db.DECIMAL(precision=2))
     def __repr__(self):
         return showItem(self)
 

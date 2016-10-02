@@ -1,5 +1,6 @@
 from BeaconServer.model import *
 from BeaconServer import *
+from sqlalchemy.sql import func
 import json
 from datetime import datetime
 
@@ -39,6 +40,8 @@ def object2json(object):
     for i in object.__dict__:
         if not i.startswith('_'):
             data[i]=object.__dict__[i]
+            if isinstance(data[i],datetime):
+                    data[i]=str(data[i])
     return json.dumps(data)
 
 def createCareGiver(k):
@@ -97,14 +100,24 @@ def editCareGiverInfo(k):
 def createCareRequest(k):
     global RECORD_ID
     cr=CareRecord(record_id=RECORD_ID)
-    cr.appointment_time=k['appointment_time']
+    appointment_datetime=k['appointment_time']
+    if isinstance(appointment_datetime, str) :
+        cr.appointment_time=datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M:%S')
+    else:
+        cr.appointment_time=appointment_datetime
     cr.caregiver_id=k['caregiver_id']
     cr.carerecipient_id=k['user_id']
     cr.record_status='on_request'
-    cr.location=k['location']
+    cr.location=CareRecipient.query.filter_by(id=k['user_id']).first().address
     db.session.add(cr)
     db.session.commit()
     RECORD_ID+=1
+    return 'success'
+
+def rateReviewCareService(k):
+    rowsUpdated=db.session.query(CareRecord).filter(CareRecord.record_id==k['record_id']).update({"rating": k['rating'], "review": k['review']})
+    db.session.commit()
+    return rowsUpdated
 
 def acceptRequest(k):
     rc=CareRecord.query.filter_by(record_id=k['record_id']).one()
@@ -138,8 +151,11 @@ def viewServiceToPerform(k):
     return list2json(rl)
 
 def apiLogin(k):
-    acc=Account.query.filter_by(username=k['username'], password=k['password']).one()
-    return object2json(acc)
+    acc=Account.query.filter_by(username=k['username'], password=k['password']).first()
+    if acc is not None:
+        return object2json(acc)
+    else:
+        return 'Incorrect Login credentials'
 
 def viewRestrictedCareRecipientInfo(k):
     cr=CareRecipient.query.filter_by(id=k['recipient_id']).one()
@@ -151,3 +167,23 @@ def saveServiceSummary(k):
 def viewCareGiver(k):
     gl=CareGiver.query.all()
     return list2json(gl)
+
+def viewCareGiverById(k):
+    caregiver = CareGiver.query.filter_by(id=k['caregiver_id']).first();
+    return object2json(caregiver)
+
+def viewAvailableCareGivers(k):
+    # TODO get available Caregivers instead of all existing caregivers
+    caregiverList = CareGiver.query.all()
+    avgRating = CareRecord.query.with_entities(CareRecord.caregiver_id, func.avg(CareRecord.rating).label('avgRating')).order_by('avgRating').all()
+    if len(caregiverList) > 1:
+        for index, caregiver in enumerate(caregiverList):
+            index -= 1
+            caregiver = caregiverList[index]
+            caregiverAvgRating = avgRating[index]
+            if caregiver.id == caregiverAvgRating[0]:
+                caregiver.average_rating = caregiverAvgRating[1]
+        return list2json(caregiverList)
+    else:
+        caregiverList[0].average_rating = avgRating[0][1]
+        return object2json(caregiverList[0])

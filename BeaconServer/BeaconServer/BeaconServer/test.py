@@ -5,20 +5,34 @@ db.drop_all() # remove all existing data
 db.create_all() # create tables of the database
 
 # care giver info
-caregiver = [{
+caregiver_list = [{
         'username':'johndeo1234',
         'password':'johndoe1234', 
         'name':'John Doe', 
         'gender':'M',
         'email':'john@doe.com',
         'contact':'98765432',
+        'no_of_service_given': 2,
         'date_of_birth': datetime.datetime(1987, 5, 24),
         'highest_education_level':'Associate\'s Degree in Nursing',
         'expertise': 'Hmmmm'
-    }]
+ },
+{
+        'username':'janedoe',
+        'password':'janedoe1234', 
+        'name':'Jane Doe', 
+        'gender':'F',
+        'email':'jane@doe.com',
+        'contact':'87654321',
+        'date_of_birth': datetime.datetime(1984, 7, 16),
+        'highest_education_level':'Associate\'s Degree in Nursing',
+        'expertise': 'Hmmmmmmm'
+}
+]
 
 # creates a care giver
-createCareGiver(caregiver[0])
+for caregiver in caregiver_list:
+    createCareGiver(caregiver)
 
 # care recipient list
 recipient_list = [{
@@ -80,33 +94,30 @@ for careRecipient in recipient_list:
 # care record list
 care_record_list = [{
         'caregiver_id': 5,
-        'user_id': 6,
-        'appointment_time': datetime.datetime(2016, 10, 3, 14, 0, 0),
-        'location': ''
-    },
-    {
-        'caregiver_id': 5,
         'user_id': 7,
-        'appointment_time': datetime.datetime(2016, 10, 6, 17, 0, 0),
-        'location': ''
+        'appointment_time': '2016-10-20 11:30:00',
+        'rating': 1
     },
     {
         'caregiver_id': 5,
         'user_id': 8,
-        'appointment_time': datetime.datetime(2016, 10, 7, 11, 0, 0),
-        'location': ''
+        'appointment_time': '2016-10-21 10:30:00',
+        'rating': 2
     },
     {
         'caregiver_id': 5,
         'user_id': 9,
-        'appointment_time': datetime.datetime(2016, 10, 7, 14, 0 , 0),
-        'location': ''
+        'appointment_time': '2016-10-10 14:30:00'
     },
     {
         'caregiver_id': 5,
         'user_id': 10,
-        'appointment_time': datetime.datetime(2016, 10, 7, 16, 0, 0),
-        'location': ''
+        'appointment_time': '2016-10-11 09:30:00'
+    },
+    {
+        'caregiver_id': 5,
+        'user_id': 11,
+        'appointment_time': '2016-10-10 09:30:00'
     }]
 
 # instantiate individual care requests from the care record list into the
@@ -147,3 +158,22 @@ viewFullInfo({
    'beacon_id': 1
 })
 
+changePassword({
+ "action": "change_password",
+ "user_id": 5,
+ "old_password": "johndoe1234",
+ "new_password": "johndoe"
+})
+
+# rate and review 2 carerecords
+rateReviewCareService({
+    "record_id": 1,
+    "rating": 4.5,
+    "review": "asdasd"
+})
+
+rateReviewCareService({
+    "record_id": 2,
+    "rating": 2.5,
+    "review": "asdasd"
+})
