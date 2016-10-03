@@ -24,6 +24,7 @@ caregiver_list = [{
         'gender':'F',
         'email':'jane@doe.com',
         'contact':'87654321',
+        'no_of_service_given': 1,
         'date_of_birth': datetime.datetime(1984, 7, 16),
         'highest_education_level':'Associate\'s Degree in Nursing',
         'expertise': 'Hmmmmmmm'
@@ -95,27 +96,25 @@ for careRecipient in recipient_list:
 care_record_list = [{
         'caregiver_id': 5,
         'user_id': 7,
-        'appointment_time': '2016-10-20 11:30:00',
-        'rating': 1
+        'appointment_time': '2016-10-20 11:30:00'
     },
     {
         'caregiver_id': 5,
         'user_id': 8,
-        'appointment_time': '2016-10-21 10:30:00',
-        'rating': 2
+        'appointment_time': '2016-10-21 10:30:00'
     },
     {
-        'caregiver_id': 5,
+        'caregiver_id': 6,
         'user_id': 9,
         'appointment_time': '2016-10-10 14:30:00'
     },
     {
-        'caregiver_id': 5,
+        'caregiver_id': 6,
         'user_id': 10,
         'appointment_time': '2016-10-11 09:30:00'
     },
     {
-        'caregiver_id': 5,
+        'caregiver_id': 6,
         'user_id': 11,
         'appointment_time': '2016-10-10 09:30:00'
     }]
@@ -136,7 +135,7 @@ accepting_request_list = [{
     },
     {
         'record_id': 3,
-        'user_id': 5
+        'user_id': 6
     }]
 
 # loop through the accepting_request_list to set these care records to an
@@ -175,5 +174,11 @@ rateReviewCareService({
 rateReviewCareService({
     "record_id": 2,
     "rating": 2.5,
+    "review": "asdasd"
+})
+
+rateReviewCareService({
+    "record_id": 3,
+    "rating": 4,
     "review": "asdasd"
 })

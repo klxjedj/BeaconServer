@@ -103,7 +103,7 @@ class Administrator(db.Model):
 
 class CareRecord(db.Model):
     __tablename__='CareRecord'
-    record_id=db.Column(db.Integer,primary_key=True)
+    record_id=db.Column(db.Integer,primary_key=True,autoincrement=True)
     caregiver_id=db.Column(db.Integer,db.ForeignKey('CareGiver.id'))
     caregiver=db.relationship('CareGiver',backref='records',foreign_keys=[caregiver_id])
     carerecipient_id=db.Column(db.Integer,db.ForeignKey('CareRecipient.id'))

@@ -3,6 +3,7 @@ from BeaconServer import *
 from sqlalchemy.sql import func
 import json
 from datetime import datetime
+from flask import Flask, request, jsonify
 
 type_map={'a':Administrator,
           'g':CareGiver,
@@ -99,7 +100,7 @@ def editCareGiverInfo(k):
 
 def createCareRequest(k):
     global RECORD_ID
-    cr=CareRecord(record_id=RECORD_ID)
+    cr=CareRecord()
     appointment_datetime=k['appointment_time']
     if isinstance(appointment_datetime, str) :
         cr.appointment_time=datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M:%S')
@@ -121,7 +122,10 @@ def rateReviewCareService(k):
 
 def acceptRequest(k):
     rc=CareRecord.query.filter_by(record_id=k['record_id']).one()
-    if rc.caregiver_id==k['user_id']:
+    caregiver_id=k['user_id']
+    if rc.caregiver_id==caregiver_id:
+        # no_of_service_given=CareGiver.query.with_entities(CareGiver.no_of_service_given).filter_by(id=caregiver_id).first()[0] + 1
+        # db.session.query(CareGiver).filter(CareGiver.id==caregiver_id).update({"no_of_service_given": no_of_service_given})
         rc.record_status='confirmed'
         db.session.commit()
         return 'Request Accepted'
@@ -136,9 +140,22 @@ def viewFullInfo(k):
     cr=CareRecipient.query.filter_by(beacon_id=k['beacon_id']).one()
     return object2json(cr)
   
-def viewRequest(k):
-    rl=CareRecord.query.filter_by(caregiver_id=k['user_id']).filter_by(record_status='on_request').all()
-    return list2json(rl)
+def viewAllRequest(k):
+    returnArray = []
+    requestList = CareRecord.query.with_entities(CareRecord.record_id, CareRecord.appointment_time, CareRecord.location, 
+        CareRecord.carerecipient_id).filter(CareRecord.record_status=="on_request", CareRecord.caregiver_id==k['user_id'])\
+        .order_by(CareRecord.appointment_time).all()
+    for index, request in enumerate(requestList):
+        index -= 1
+        dict = {}
+        dict['record_id'] = requestList[index].record_id
+        dict['appointment_time'] = str(requestList[index].appointment_time)
+        dict['location'] = requestList[index].location
+        careRecipient = CareRecipient.query.with_entities(CareRecipient.name).filter_by(id=requestList[index].carerecipient_id).first()
+        dict['carerecipient_id'] = requestList[index].carerecipient_id
+        dict['name'] = careRecipient.name
+        returnArray.append(dict)
+    return str(returnArray)
 
 def showDoctorContact(k):
     recipient_id=k['recipient_id']
@@ -175,11 +192,11 @@ def viewCareGiverById(k):
 def viewAvailableCareGivers(k):
     # TODO get available Caregivers instead of all existing caregivers
     caregiverList = CareGiver.query.all()
-    avgRating = CareRecord.query.with_entities(CareRecord.caregiver_id, func.avg(CareRecord.rating).label('avgRating')).order_by('avgRating').all()
     if len(caregiverList) > 1:
         for index, caregiver in enumerate(caregiverList):
             index -= 1
             caregiver = caregiverList[index]
+            avgRating = CareRecord.query.with_entities(CareRecord.caregiver_id, func.avg(CareRecord.rating)).filter_by(record_status='confirmed',caregiver_id=caregiver.id).all()
             caregiverAvgRating = avgRating[index]
             if caregiver.id == caregiverAvgRating[0]:
                 caregiver.average_rating = caregiverAvgRating[1]
@@ -187,3 +204,7 @@ def viewAvailableCareGivers(k):
     else:
         caregiverList[0].average_rating = avgRating[0][1]
         return object2json(caregiverList[0])
+
+def getSummarisedProfile(k):
+    profile = CareGiver.query.filter_by(id=k['user_id']).first()
+    return object2json(profile)
