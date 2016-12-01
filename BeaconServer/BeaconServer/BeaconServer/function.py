@@ -2,6 +2,7 @@ from BeaconServer.model import *
 from BeaconServer import *
 import json
 from datetime import datetime
+import shelve
 
 type_map={'a':Administrator,
           'g':CareGiver,
@@ -11,7 +12,14 @@ type_map={'a':Administrator,
           }
 
 def createUser(type,k):
-    global ACCOUNT_ID
+    
+    acc_id=shelve.open('account_id')
+    if not acc_id:
+        ACCOUNT_ID=1
+        db.create_all()
+    else:
+        ACCOUNT_ID=acc_id['id']
+
     new_acct=Account(id=ACCOUNT_ID,username=k['username'],password=k['password'],role=type)
     new_user=type_map[type](id=ACCOUNT_ID)
     for i in dir(new_user):
@@ -20,6 +28,7 @@ def createUser(type,k):
     db.session.add_all([new_user,new_acct])
     db.session.commit()
     ACCOUNT_ID+=1
+    acc_id['id']=ACCOUNT_ID
     
 
 def list2json(l):
@@ -33,7 +42,14 @@ def list2json(l):
                     data[i]=str(data[i])
         lr.append(data)
     return json.dumps(lr) 
-
+def mod2json(m):
+    data={}
+    for i in m.__dict__:
+        if not i.startswith('_'):
+            data[i]=m.__dict__[i]
+            if isinstance(data[i],datetime):
+                data[i]=str(data[i])
+    return json.dumps(data)
 def createCareGiver(k):
     createUser('g',k)
     return viewCareGiver(k)
@@ -125,8 +141,11 @@ def viewServiceToPerform(k):
     return list2json(rl)
 
 def apiLogin(k):
-    rl=Account.query.filter_by(username=k['username'], password=k['password']).all()
-    return list2json(rl)
+    rl=Account.query.filter_by(username=k['username'], password=k['password']).one()
+    if not rl:
+        return 'result is null'
+    else:
+        return mod2json(rl)
 
 def viewRestrictedCareRecipientInfo(k):
     return 
@@ -141,3 +160,23 @@ def saveServiceSummary(k):
 def viewCareGiver(k):
     gl=CareGiver.query.all()
     return list2json(gl)
+
+def viewAccount(k):
+    al=Account.query.all()
+    return list2json(al)
+
+def viewDoctor(k):
+    al=Account.query.all()
+    return list2json(al)
+
+def viewCareRecipient(k):
+    al=Account.query.all()
+    return list2json(al)
+
+def viewFamilyMember(k):
+    al=Account.query.all()
+    return list2json(al)
+
+def viewCareRecord(k):
+    al=CareRecord.query.all()
+    return list2json(al)

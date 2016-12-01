@@ -83,8 +83,7 @@ class FamilyMember(db.Model):
     account=db.relationship('Account')
     
     relationship=db.Column(db.String)
-    carerecipient_id=db.Column(db.Integer,db.ForeignKey('CareRecipient.id'))
-    carerecipient=db.relationship('CareRecipient',backref='family_member',foreign_keys=[carerecipient_id])
+    carerecipient=db.relationship('CareRecipient',backref='family_member')
     def __repr__(self):
         return showItem(self)
     

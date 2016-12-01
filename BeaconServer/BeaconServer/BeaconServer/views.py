@@ -73,16 +73,46 @@ def edit_carerecipient_info():
         return 'ok'
     return render_template('webapi.html',form=form,url='edit_carerecipient_info')
 
+@app.route('/test',methods=['GET','POST'])
+def test():
+    
+    return str(type(request.get_json()))
+
 @app.route('/api',methods=['GET','POST'])
 def api():
-    k=request.form
+    k=request.get_json()
     user_id=k['user_id']
     role=Account.query.filter_by(id=user_id).one().role
     action=k['action']
     return action_map[role][action](k)
 
+
 @app.route('/api_login',methods=['POST'])
 def api_login():
-    k=request.form
+    k=request.get_json()
     return apiLogin(k)
         
+
+@app.route('/ggg',methods=['GET'])
+def view_giver():
+    return viewCareGiver({})
+
+@app.route('/aaa',methods=['GET'])
+def view_account():
+    return viewAccount({})
+
+@app.route('/ddd',methods=['GET'])
+def view_doctor():
+    return viewDoctor({})
+
+@app.route('/rrr',methods=['GET'])
+def view_recipient():
+    return viewCareRecipient({})
+
+@app.route('/mmm',methods=['GET'])
+def view_member():
+    return viewFamilyMember({})
+
+@app.route('/rcd',methods=['GET'])
+def view_record():
+    return viewCareRecord({})

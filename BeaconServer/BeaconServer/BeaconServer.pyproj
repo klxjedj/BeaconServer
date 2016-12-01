@@ -55,7 +55,7 @@
   <ItemGroup>
     <Content Include="BeaconServer\templates\carerecipientform.html" />
     <Content Include="BeaconServer\templates\adminform.html" />
-    <Content Include="BeaconServer\templates\familimemberform.html" />
+    <Content Include="BeaconServer\templates\familymemberform.html" />
     <Content Include="BeaconServer\templates\doctorform.html" />
     <Content Include="BeaconServer\templates\form.html" />
     <Content Include="BeaconServer\templates\admin.html" />
