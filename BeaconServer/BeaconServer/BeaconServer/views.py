@@ -82,7 +82,7 @@ def test():
 def api():
     k=request.get_json()
     user_id=k['user_id']
-    role=Account.query.filter_by(account_id=user_id).one().role
+    role=Account.query.filter_by(id=user_id).one().role
     action=k['action']
     return action_map[role][action](k)
 
@@ -92,13 +92,6 @@ def api_login():
     k=request.get_json()
     return apiLogin(k)
         
-
-
-
-
-'''
-Testing
-'''
 
 @app.route('/ggg',methods=['GET'])
 def view_giver():

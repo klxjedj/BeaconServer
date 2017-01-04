@@ -2,7 +2,6 @@ from BeaconServer.model import *
 from BeaconServer import *
 import json
 from datetime import datetime
-from dateutil.parser import parse
 import shelve
 
 type_map={'a':Administrator,
@@ -12,10 +11,25 @@ type_map={'a':Administrator,
           'd':Doctor
           }
 
+def createUser(type,k):
+    
+    acc_id=shelve.open('account_id')
+    if not acc_id:
+        ACCOUNT_ID=1
+        db.create_all()
+    else:
+        ACCOUNT_ID=acc_id['id']
 
-'''
-General Function
-'''
+    new_acct=Account(id=ACCOUNT_ID,username=k['username'],password=k['password'],role=type)
+    new_user=type_map[type](id=ACCOUNT_ID)
+    for i in dir(new_user):
+        if i in k:
+            setattr(new_user,i,k[i])
+    db.session.add_all([new_user,new_acct])
+    db.session.commit()
+    ACCOUNT_ID+=1
+    acc_id['id']=ACCOUNT_ID
+    
 
 def list2json(l):
     lr=[]
@@ -28,7 +42,6 @@ def list2json(l):
                     data[i]=str(data[i])
         lr.append(data)
     return json.dumps(lr) 
-
 def mod2json(m):
     data={}
     for i in m.__dict__:
@@ -37,42 +50,9 @@ def mod2json(m):
             if isinstance(data[i],datetime):
                 data[i]=str(data[i])
     return json.dumps(data)
-
-def changePassword(k):
-    account=Account.query.filter(Account.account_id==k['user_id']).one()
-    if account.password==k['old_password']:
-        account.password=k['new_password']
-        db.session.add(account)
-        db.session.commit()
-        return 'Password Changed'
-    else:
-        return 'Incorrect Password'
-
-'''
-Create Data
-'''
-def createUser(type,k):
-    
-    acc_id=shelve.open('account_id')
-    if not acc_id:
-        ACCOUNT_ID=1
-        db.create_all()
-    else:
-        ACCOUNT_ID=acc_id['id']
-
-    new_acct=Account(account_id=ACCOUNT_ID,username=k['username'],password=k['password'],role=type)
-    new_user=type_map[type](account_id=ACCOUNT_ID)
-    for i in dir(new_user):
-        if i in k:
-            setattr(new_user,i,k[i])
-    db.session.add_all([new_user,new_acct])
-    db.session.commit()
-    ACCOUNT_ID+=1
-    acc_id['id']=ACCOUNT_ID
-    
 def createCareGiver(k):
     createUser('g',k)
-    return viewCareGivers(k)
+    return viewCareGiver(k)
 
 def createCareRecipient(k):
     createUser('r',k)
@@ -90,70 +70,15 @@ def createAdministrator(k):
     createUser('a',k)
     return list2json(db.session.query(Administrator).all())
 
-'''
-Recipient Action
-'''
-
-def createCareRequest(k):
-    record_id=shelve.open('record_id')
-    if not record_id:
-        RECORD_ID=1
+def changePassword(k):
+    account=Account.query.filter(Account.id==k['user_id']).one()
+    if account.password==k['old_password']:
+        account.password=k['new_password']
+        db.session.add(account)
+        db.session.commit()
+        return 'Password Changed'
     else:
-        RECORD_ID=record_id['id']    
-    cr=CareRecord(record_id=RECORD_ID)
-    cr.appointment_time=parse(k['appointment_time'])
-    cr.caregiver_id=k['caregiver_id']
-    cg=CareGiver.query.filter_by(account_id=k['caregiver_id']).one()
-    cr.caregiver_name=cg.name
-    cr.carerecipient_id=k['user_id']
-    cc=CareRecipient.query.filter_by(account_id=k['user_id']).one()
-    cr.carerecipient_name=cc.name
-    cr.record_status='on_request'
-    cr.special_need=k['special_needs']
-    db.session.add(cr)
-    db.session.commit()
-    RECORD_ID+=1
-    record_id['id']=RECORD_ID
-    return "success"
-
-def DeleteRequests(k):
-    crl=CareRecord.query.all()
-    for cr in crl:
-        db.session.delete(cr)
-    db.session.commit()
-    return "success"
-
-def viewCareGivers(k):
-    gl=CareGiver.query.all()
-    return list2json(gl)
-
-'''
-Giver Action
-'''
-
-def viewRequests(k):
-    rl=CareRecord.query.filter_by(caregiver_id=k['user_id']).filter_by(record_status='on_request').all()
-    return list2json(rl)
-
-def viewProfile(k):
-    gm=CareGiver.query.filter_by(account_id=k['user_id']).one()
-    return mod2json(gm)
-
-def viewRequestToday(k):
-    rl=CareRecord.query.filter_by(record_status='confirmed').all()
-    return list2json(rl)
-
-def getCancelLeft(k):
-    return str(3)
-
-
-
-
-
-
-
-
-
+        return 'Incorrect Password'
 
 def blockBadGiver(k):
     giver_id=k['giver_id']
@@ -169,23 +94,30 @@ def editCareRecipientInfo(k):
     db.session.commit()
     return 'Info Changed'
 
-
+def createCareRequest(k):
+    global RECORD_ID
+    cr=CareRecord(record_id=RECORD_ID)
+    cr.appointment_time=k['appointment_time']
+    cr.caregiverid=k['caregiver_id']
+    cr.carerecipientid=k['user_id']
+    cr.record_status='on_request'
+    cr.location=k['location']
+    db.session.add(cr)
+    db.session.commit()
+    RECORD_ID+=1
 
 def acceptRequest(k):
     rc=CareRecord.query.filter_by(record_id=k['record_id']).one()
-    if rc.caregiver_id==k['user_id']:
+    if rc.caregiverid==k['user_id']:
         rc.record_status='confirmed'
         db.session.commit()
         return 'Request Accepted'
     else:
         return 'Incorrect Info'
-
-
+    
 def cancelRequest(k):
     rc=CareRecord.query.filter_by(record_id=k['record_id']).one()
     rc.record_status='cancelled'
-    db.session.commit()
-    return "cancelled"
 
 def viewFullInfo(k):
     cr=CareRecipient.query.filter_by(beacon_id=k['beacon_id']).one()
@@ -195,9 +127,9 @@ def viewFullInfo(k):
             data[i]=cr.__dict__[i]
     return json.dumps(data)
   
-
-
-
+def viewRequest(k):
+    rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='on_request').all()
+    return list2json(rl)
 
 def showDoctorContact(k):
     recipient_id=k['recipient_id']
@@ -205,11 +137,8 @@ def showDoctorContact(k):
     return cr.doctor.contact
 
 def viewServiceToPerform(k):
-    rl=CareRecord.query.filter_by(caregiver_id=k['user_id']).filter_by(record_status='confirmed').all()
+    rl=CareRecord.query.filter_by(caregiverid=k['user_id']).filter_by(record_status='confirmed').all()
     return list2json(rl)
-
-
-
 
 def apiLogin(k):
     rl=Account.query.filter_by(username=k['username'], password=k['password']).one()
@@ -218,8 +147,19 @@ def apiLogin(k):
     else:
         return mod2json(rl)
 
+def viewRestrictedCareRecipientInfo(k):
+    return 
 
+def viewTrackingInfo(k):
+    return
 
+def saveServiceSummary(k):
+    return
+
+#define
+def viewCareGiver(k):
+    gl=CareGiver.query.all()
+    return list2json(gl)
 
 def viewAccount(k):
     al=Account.query.all()
@@ -240,24 +180,3 @@ def viewFamilyMember(k):
 def viewCareRecord(k):
     al=CareRecord.query.all()
     return list2json(al)
-
-def viewCareRecordById(k):
-    al=CareRecord.query.filter_by(record_id=k['record_id']).one()
-    return mod2json(al)
-
-def viewRecordsByRecipient(k):
-    rl=CareRecord.query.filter_by(recipient_id=k['carerecipient_id']).all()
-    return list2json(rl)
-
-def viewCareGiverById(k):
-    al=CareGiver.query.filter_by(id=k['caregiver_id']).one()
-    return mod2json(al)
-
-
-
-def viewTodayService(k):
-    al=CareRecord.query.filter_by(caregiver_id=k['user_id']).all()
-    today=datetime.now().date()
-    rl=[item for item in al if item.appointment_time.date==today]
-    return list2json(rl)
-

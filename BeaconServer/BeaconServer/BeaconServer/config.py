@@ -16,19 +16,28 @@ action_map={
          'create_family_member':createFamilyMember,
          'create_doctor':createDoctor,
          'create_admin':createAdministrator,
-         },
-    'r':{'change_password':changePassword,
-         'create_care_request':createCareRequest,
-         'delete_requests':DeleteRequests,
-         'view_available_care_givers':viewCareGivers
+         'block_bad_giver':blockBadGiver,
+         'edit_carerecipient_info':editCareRecipientInfo,
+         'view_care_giver':viewCareGiver
          },
     'g':{'change_password':changePassword,
-         'view_all_request':viewRequests,
-         'view_service_to_perform_today':viewRequestToday,
-         'get_summarized_profile':viewProfile,
-         'get_cancellations_left':getCancelLeft
+         'accept_request':acceptRequest,
+         'cancel_request':cancelRequest,
+         'view_full_info':viewFullInfo,
+         'view_request':viewRequest,
+         'show_doctor_contact':showDoctorContact,
+         'view_service_to_performe':viewServiceToPerform,
+         'view_care_giver':viewCareGiver,
+         'save_service_summary':saveServiceSummary,
+         'view_restricted_carerecipient_info':viewRestrictedCareRecipientInfo,
+         'view_tracking_info':viewTrackingInfo,
+         'api_login':apiLogin
         },
-
+    'r':{'change_password':changePassword,
+         'view_care_giver':viewCareGiver,
+         'create_care_request':createCareRequest,
+         'api_login':apiLogin
+         },
     'm':{'change_password':changePassword},
     'd':{'change_password':changePassword}
     }
