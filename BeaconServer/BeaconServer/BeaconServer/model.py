@@ -23,15 +23,7 @@ class Account(db.Model):
 
     def __repr__(self):
         return showItem(self)
-
-class Bidding(db.Model):
-    __tablename__='Bidding'
-    bidding_id=db.Column(db.Integer,primary_key=True)
-    record_id=db.Column(db.Integer,db.ForeignKey('CareRecord.record_id'))
-    caregiver_id=db.Column(db.Integer,db.ForeignKey('CareGiver.account_id'))
-    carerecipient_id=db.Column(db.Integer,db.ForeignKey('CareRecipient.account_id'))
-    bidding_status=db.Column(db.String)
-
+    
 class CareGiver(db.Model):
     __tablename__='CareGiver'
     account_id=db.Column(db.Integer,db.ForeignKey('Account.account_id'),primary_key=True)
@@ -48,16 +40,7 @@ class CareGiver(db.Model):
 
     def __repr__(self):
         return showItem(self)
-
-class Doctor(db.Model):
-    __tablename__='Doctor'
-    account_id=db.Column(db.Integer,db.ForeignKey('Account.account_id'),primary_key=True)
-    name=db.Column(db.String)
-    clinic=db.Column(db.String)
-    contact=db.Column(db.String)
-    def __repr__(self):
-        return showItem(self)
-
+    
 class CareRecipient(db.Model):
     __tablename__='CareRecipient'
     account_id=db.Column(db.Integer,db.ForeignKey('Account.account_id'),primary_key=True)
@@ -72,6 +55,15 @@ class CareRecipient(db.Model):
     def __repr__(self):
         return showItem(self)
 
+class Doctor(db.Model):
+    __tablename__='Doctor'
+    account_id=db.Column(db.Integer,db.ForeignKey('Account.account_id'),primary_key=True)
+    name=db.Column(db.String)
+    clinic=db.Column(db.String)
+    contact=db.Column(db.String)
+    def __repr__(self):
+        return showItem(self)
+
 class FamilyMember(db.Model):
     __tablename__='FamilyMember'
     account_id=db.Column(db.Integer,db.ForeignKey('Account.account_id'),primary_key=True)
@@ -81,15 +73,23 @@ class FamilyMember(db.Model):
 
     def __repr__(self):
         return showItem(self)
-    
 
 class Administrator(db.Model):
     __tablename__='Administrator'
     id=db.Column(db.Integer,db.ForeignKey('Account.account_id'),primary_key=True)
     name=db.Column(db.String)
-    account=db.relationship('Account')
     def __repr__(self):
         return showItem(self)
+
+  
+class Bidding(db.Model):
+    __tablename__='Bidding'
+    bidding_id=db.Column(db.Integer,primary_key=True)
+    record_id=db.Column(db.Integer,db.ForeignKey('CareRecord.record_id'))
+    caregiver_id=db.Column(db.Integer,db.ForeignKey('CareGiver.account_id'))
+    carerecipient_id=db.Column(db.Integer,db.ForeignKey('CareRecipient.account_id'))
+    bidding_status=db.Column(db.String)  
+
 
 class CareRecord(db.Model):
     __tablename__='CareRecord'
