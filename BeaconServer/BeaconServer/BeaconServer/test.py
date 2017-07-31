@@ -1,3 +1,9 @@
+'''
+this script defined several examples of user data for test when developing.
+running this script independently would clear the database and add the examples in this script.
+'''
+
+
 # this three line initiate the database, just run these in interactive window 
 from BeaconServer.function import *
 import datetime

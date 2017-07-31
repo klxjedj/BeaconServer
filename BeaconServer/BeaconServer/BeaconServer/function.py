@@ -1,3 +1,8 @@
+'''
+this script defined all the function which are usered for handling the requests and other actions of user.
+'''
+
+
 from BeaconServer.model import *
 from BeaconServer import *
 import json

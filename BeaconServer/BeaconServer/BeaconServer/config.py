@@ -1,3 +1,8 @@
+'''
+this script defined the map from role to permitted action for each role.  
+'''
+
+
 from BeaconServer.function import *
 
 admin_list=['add_caregiver',

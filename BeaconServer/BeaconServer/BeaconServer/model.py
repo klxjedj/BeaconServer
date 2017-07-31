@@ -1,3 +1,7 @@
+'''
+this script defined the database model of the system, details of each table are described in the system readme file.
+'''
+
 from BeaconServer import app
 from flask_sqlalchemy import SQLAlchemy
 

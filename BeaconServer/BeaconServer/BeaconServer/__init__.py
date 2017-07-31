@@ -1,5 +1,6 @@
 """
 The flask application package.
+this script will be executed when start running the server.
 """
 
 from flask import Flask

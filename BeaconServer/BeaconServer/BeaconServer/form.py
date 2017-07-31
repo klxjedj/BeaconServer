@@ -1,3 +1,8 @@
+'''
+this script defined all the form which is used in each view in the views.py file.
+'''
+
+
 from flask_wtf import Form
 from wtforms import TextField,BooleanField,StringField,PasswordField,validators,FileField,TextAreaField,SubmitField,IntegerField,HiddenField
 from wtforms.validators import DataRequired
